@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>{{ resume.contact.name }} — Resume</title>
+    <style>
+      /* Stockholm Hairline, ATS-safe: single column,
+     no tables, no images; all content is real text. */
+      @page {
+        size: A4;
+        margin: 9mm 12mm;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: "Times New Roman", serif;
+        font-size: 9.5pt;
+        line-height: 1.35;
+        color: #1a1a1a;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      .name {
+        text-align: center;
+        color: #1a1a1a;
+        font-size: 17pt;
+        font-weight: bold;
+        margin-bottom: 2px;
+      }
+      .contact {
+        text-align: center;
+        color: #1a1a1a;
+        margin-bottom: 6px;
+      }
+      h2 {
+        text-align: center;
+        text-transform: uppercase;
+        letter-spacing: 0.14em;
+        font-size: 10pt;
+        color: #000;
+        border-bottom: 1px solid #1a1a1a;
+        padding-bottom: 2px;
+        margin: 8px 0 4px;
+        break-after: avoid;
+      }
+      .summary {
+        text-align: justify;
+        text-indent: 2em;
+      }
+      .summary-highlight {
+        margin: 2px 0 0;
+      }
+      .skill-line {
+        margin-bottom: 1px;
+      }
+      .job {
+        margin-bottom: 6px;
+        break-inside: avoid;
+      }
+      .job-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+      }
+      .job-title {
+        font-weight: bold;
+      }
+      .job-dates {
+        white-space: nowrap;
+      }
+      .job-meta {
+        font-size: 8.5pt;
+        color: #555;
+        font-style: italic;
+        margin-bottom: 1px;
+      }
+      ul {
+        padding-left: 14px;
+        list-style: none;
+      }
+      li {
+        margin-bottom: 1px;
+        break-inside: avoid;
+        position: relative;
+      }
+      li::before {
+        content: "\2022";
+        position: absolute;
+        left: -12px;
+      }
+      .entry {
+        margin-bottom: 3px;
+      }
+      .detail {
+        font-size: 9pt;
+        color: #333;
+      }
+      .footer {
+        margin-top: 10px;
+        border-top: 1px solid #1a1a1a;
+        padding-top: 4px;
+        text-align: center;
+        font-style: italic;
+        font-size: 8pt;
+        color: #777;
+      }
+    </style>
+  </head>
+  <body>
+    {% set c = resume.contact %}
+    <div class="name">{{ c.name }}</div>
+    <div class="contact">
+      {{ [c.location, c.phone] | select | join(' | ') }}<br />{{ [c.email,
+      c.linkedin, c.github, c.portfolio] | select | join(' | ') }}
+    </div>
+
+    <h2>Professional Summary</h2>
+    <p class="summary">
+      {{ resume.summary.text }}{% for h in resume.summary.highlights %}
+      <strong>{{ h.text if h is mapping else h }}</strong>{% endfor %}{% if
+      resume.summary.closing %} {{ resume.summary.closing }}{% endif %}
+    </p>
+
+    <h2>Skills</h2>
+    {% for group in resume.skills %}
+    <div class="skill-line">
+      <strong>{{ group.category }}:</strong> {{ group['items'] |
+      map(attribute='text') | join(', ') }}
+    </div>
+    {% endfor %}
+
+    <h2>Experience</h2>
+    {% for job in resume.experience %}
+    <div class="job">
+      <div class="job-head">
+        <span class="job-title">{{ job.title }} — {{ job.company }}</span>
+        <span class="job-dates">{{ job.start }} – {{ job.end }}</span>
+      </div>
+      <div class="job-meta">{{ job.location }}</div>
+      {% if job.bullets %}
+      <ul>
+        {% for b in job.bullets %}
+        <li>{{ b.text }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+    </div>
+    {% endfor %} {% if resume.projects %}
+    <h2>Projects</h2>
+    {% for p in resume.projects %}
+    <div class="entry">
+      <strong>{{ p.name }}</strong>{% if p.url %} ({{ p.url }}){% endif %}: {{
+      p.text }}
+    </div>
+    {% endfor %} {% endif %}
+
+    <h2>Education</h2>
+    {% for e in resume.education %}
+    <div class="entry">
+      <div>
+        <strong>{{ e.degree }} {{ e.field }}</strong>, {{ e.school }}, {{ e.year
+        }}
+      </div>
+      {% if e.thesis_title %}
+      <div class="detail">Thesis: {{ e.thesis_title }}</div>
+      {% endif %} {% for d in e.details %}
+      <div class="detail">{{ d }}</div>
+      {% endfor %}
+    </div>
+    {% endfor %} {% if resume.certifications %}
+    <h2>Certifications</h2>
+    {% for cert in resume.certifications %}
+    <div class="entry">
+      {{ cert.name }} — {{ cert.issuer }}, {{ cert.year }}
+    </div>
+    {% endfor %} {% endif %} {% if resume.publications %}
+    <h2>Publications</h2>
+    {% for pub in resume.publications %}
+    <div class="entry">
+      {{ pub.title }}{% if pub.venue %} — {{ pub.venue }}{% endif %}{% if
+      pub.year %}, {{ pub.year }}{% endif %}
+    </div>
+    {% endfor %} {% endif %} {% if resume.languages %}
+    <h2>Languages</h2>
+    <div class="entry">
+      {% for l in resume.languages %}{{ l.name }} ({{ l.level }}){% if not
+      loop.last %} · {% endif %}{% endfor %}
+    </div>
+    {% endif %}
+
+    <div class="footer">References available upon request.</div>
+  </body>
+</html>

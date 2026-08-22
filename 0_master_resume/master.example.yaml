@@ -1,0 +1,159 @@
+# ============================================================
+# MASTER PROFILE — example / schema reference
+# Copy this to master.yaml and replace everything with YOUR real facts.
+# ============================================================
+# RULES
+#   - Every fact has an ID. Agents cite IDs; fact_check.py verifies them.
+#   - Numbers must be real. Agents copy them EXACTLY, never round or inflate.
+#   - angles tag which job type a fact supports:
+#       ds = Data Scientist, mle = ML Engineer, ai = AI Engineer, bi = BI Engineer
+#   - `metrics` is also where you put GUARDRAILS. A trailing comment like
+#     "# POC — never claim production usage" is read by the reviewing agents
+#     and stops them overselling. Use it liberally; it is the main honesty lever.
+#   - `# TODO:` marks a fact that needs a real number you have not dug up yet.
+# ============================================================
+
+contact:
+  name: "Ada Example"
+  email: "ada@example.com"
+  phone: "+1 555 0100"
+  location: "Berlin, Germany — open to relocation"
+  linkedin: "https://linkedin.com/in/example"
+  github: "https://github.com/example"
+  portfolio: ""
+
+# Short, reusable claims the tailor can pull into the summary line.
+summary_facts:
+  - id: sum1
+    fact: "8 years building data pipelines and ML models in production"
+  - id: sum2
+    fact: "M.Sc. in Computer Science, specialising in machine learning"
+  - id: sum3
+    fact: "translates model output into decisions non-technical stakeholders can act on"
+
+experience:
+  - id: exp1
+    company: "Northwind Analytics"
+    title: "Senior Data Scientist"
+    # Other truthful ways to say the same title, for roles that use different words.
+    honest_title_variants: ["Machine Learning Engineer"]
+    location: "Berlin, Germany"
+    employment_type: "Full-time"
+    start: "2022-03"
+    end: "present"
+    bullets:
+      - id: exp1.b1
+        fact: "automated the weekly stock report the ops team had assembled by hand, replacing the manual pull with a scheduled SQL and pandas job"
+        metrics: "cut turnaround from 3 days to 4 hours"
+        tech: [python, pandas, sql]
+        angles: [ds, bi]
+      - id: exp1.b2
+        fact: "moved model training and scoring onto a scheduled orchestration pipeline with automated data-quality checks"
+        metrics: "" # TODO: how many models? what run frequency?
+        tech: [python, airflow, docker, postgresql]
+        angles: [mle]
+      - id: exp1.b3
+        fact: "prototyped a retrieval-augmented assistant over internal documentation"
+        metrics: "" # PROTOTYPE — never claim it shipped or that anyone uses it
+        tech: [python, langchain, faiss, llm]
+        angles: [ai]
+
+  - id: exp2
+    company: "Contoso Retail"
+    title: "Data Analyst"
+    honest_title_variants: []
+    location: "Munich, Germany"
+    employment_type: "Full-time"
+    start: "2019-01"
+    end: "2022-02"
+    bullets:
+      - id: exp2.b1
+        fact: "rebuilt the weekly sales reporting stack, replacing manual spreadsheet consolidation with a modelled warehouse layer"
+        metrics: "6 manual reports replaced by 1 dashboard; used by ~25 people"
+        tech: [sql, dbt, power-bi]
+        angles: [bi]
+      - id: exp2.b2
+        fact: "partnered with category managers to define the metric definitions behind the reporting layer"
+        metrics: ""
+        tech: []
+        angles: [bi, ds]
+
+projects:
+  - id: proj1
+    name: "Open Air — city air-quality dashboard"
+    url: "https://github.com/example/open-air"
+    bullets:
+      - id: proj1.b1
+        fact: "side project: collected public sensor readings on a schedule and published a live map with a 24-hour forecast per station"
+        metrics: "12 stations; hourly refresh" # side project — no user base to claim
+        tech: [python, fastapi, sqlite, leaflet]
+        angles: [ds, mle]
+
+education:
+  - id: edu1
+    degree: "M.Sc."
+    field: "Computer Science"
+    school: "Technical University of Munich"
+    year: "2018"
+    start: "2016-10"
+    end: "2018-09"
+    thesis_title: "Anomaly Detection in Streaming Sensor Data"
+    url: ""
+    details:
+      - "Focus: machine learning, distributed systems, time series"
+      - "Coursework in deep learning, NLP, and statistical modelling"
+
+skills:
+  # `evidence` must point at fact IDs above. A skill with no evidence is a red flag
+  # the reviewers will call out — either find the evidence or drop the skill.
+  - id: sk1
+    name: "Python"
+    level: "strong" # strong | comfortable | familiar
+    evidence: "modelling at exp1.b1; pipelines at exp1.b2; side project proj1"
+    aliases: []
+    angles: [ds, mle, ai, bi]
+  - id: sk2
+    name: "SQL"
+    level: "strong"
+    evidence: "warehouse layer at exp2.b1"
+    aliases: ["PostgreSQL"]
+    angles: [ds, bi, mle]
+  - id: sk3
+    name: "LLM & RAG Engineering"
+    level: "comfortable"
+    evidence: "internal-docs assistant prototype at exp1.b3"
+    aliases: ["RAG", "LangChain", "prompt engineering"]
+    angles: [ai, mle]
+
+certifications:
+  # NEVER present an expired cert as current — check `expires` against today.
+  - id: cert1
+    name: "AWS Certified Machine Learning – Specialty"
+    issuer: "Amazon Web Services"
+    year: "2023"
+    issued: "2023-05"
+    expires: "2026-05"
+
+publications:
+  - id: pub1
+    title: "Anomaly Detection in Streaming Sensor Data"
+    authors: "Ada Example, Grace Coauthor"
+    venue: "Example Workshop on Data Engineering"
+    year: "2018"
+    doi: ""
+    url: ""
+    note: "From the M.Sc. thesis at edu1"
+
+languages:
+  - id: lang1
+    name: "English"
+    level: "native"
+  - id: lang2
+    name: "German"
+    level: "professional"
+    evidence: "C1 certificate"
+
+# Optional — only rendered by templates that ask for it.
+interests:
+  - id: int1
+    text: "Cycling"

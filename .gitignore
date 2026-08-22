@@ -1,0 +1,18 @@
+# Your real profile and applications never get committed.
+0_master_resume/master.yaml
+3_review/
+outputs/
+application_tracker.xlsx
+~$*.xlsx
+
+# Keep the intake/output folders in the repo, but never their contents.
+1_raw_jd/*
+!1_raw_jd/.gitkeep
+2_applications/*
+!2_applications/.gitkeep
+
+.DS_Store
+__pycache__/
+*.pyc
+.venv/
+.claude/settings.local.json
